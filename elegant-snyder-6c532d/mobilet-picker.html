@@ -261,15 +261,15 @@
   /* Transparent special case */
   .swatch[data-transparent="1"] .swatch__disc{
     background:transparent !important;
-    border:2.5px solid #ccc !important;
-    box-shadow:0 0 6px rgba(200,200,200,0.3), 0 4px 10px -2px rgba(200,200,200,0.2) !important;
+    border:2.5px solid #b8b8c0 !important;
+    box-shadow:0 0 6px rgba(160,160,170,0.25), 0 4px 10px -2px rgba(160,160,170,0.18) !important;
   }
   .swatch[data-transparent="1"] .swatch__disc::before{
     content:'';position:absolute;inset:0;border-radius:50%;
-    background:repeating-linear-gradient(45deg,#fff,#fff 4px,#f0f0f0 4px,#f0f0f0 5px);
-    opacity:0.5;
+    background:repeating-linear-gradient(45deg,#fff,#fff 3px,#d8d8e0 3px,#d8d8e0 5px);
+    opacity:0.85;
   }
-  .swatch[data-border="1"] .swatch__disc{border:2.5px solid var(--swatch-color)}
+  .swatch[data-border="1"] .swatch__disc{border:1.5px solid color-mix(in srgb, var(--swatch-color) 60%, #888)}
   .swatch__name{font-size:12px;font-weight:500;color:var(--ink);text-align:center;transition:all .15s ease}
   .swatch__badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;font:600 9px/18px 'Josefin Sans';text-align:center;display:none;z-index:5}
   .swatch{position:relative}
@@ -294,12 +294,16 @@
   .size__opt{
     appearance:none;border:1.5px solid var(--line);background:var(--bg);
     padding:16px 8px 14px;border-radius:var(--radius);cursor:pointer;
-    display:flex;flex-direction:column;align-items:center;gap:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:10px;
+    min-height:140px;
     transition:all .25s ease;font-family:'Josefin Sans',sans-serif;
   }
   @media (hover: hover){ .size__opt:hover{border-color:#ccc} }
   .size__opt[aria-checked="true"]{border-color:var(--navy);background:var(--navy)}
   .size__opt img{height:90px;width:auto;opacity:0.7;transition:opacity .2s}
+  .size__opt[data-size="regular"] img{height:64px}
+  .size__opt[data-size="large"]   img{height:82px}
+  .size__opt[data-size="bigboi"]  img{height:100px}
   .size__opt[aria-checked="true"] img{opacity:1;filter:brightness(0) invert(1)}
   @media (hover: hover){ .size__opt:hover img{opacity:1} }
   .size__name{font:500 12px/1 'Josefin Sans';color:#888;letter-spacing:.04em;transition:all .2s}
@@ -564,7 +568,7 @@
           <div class="colour-group__label">Special — solid colour</div>
           <div class="swatches">
 <button type="button" class="swatch" data-finish="solid" style="--swatch-color:#A01050" data-state="none" data-id="c13" data-name="Deep Pink" data-hex="#A01050"><span class="swatch__disc" style="background:#A01050"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Pink</span></button>
-<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#FFCCBC" data-state="none" data-id="c12" data-name="Peachy" data-hex="#FFCCBC"><span class="swatch__disc" style="background:#FFCCBC"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Peachy</span></button>
+<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#FFCCBC" data-state="none" data-id="c12" data-name="Peachy" data-hex="#FFCCBC" data-border="1"><span class="swatch__disc" style="background:#FFCCBC"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Peachy</span></button>
           </div>
         </div>
         <div class="colour-group">
