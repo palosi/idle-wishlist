@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>idle — kit picker</title>
-<script>(()=>{let last='';setInterval(async()=>{try{const r=await fetch('/mobilet-picker.html',{method:'HEAD',cache:'no-store'});const len=r.headers.get('content-length')||'';if(last&&len!==last)location.reload();last=len}catch{}},900)})();</script>
+<script>(()=>{const h=location.hostname;if(h!=='localhost'&&h!=='127.0.0.1'&&h!=='')return;let last='';setInterval(async()=>{try{const r=await fetch('/mobilet-picker.html',{method:'HEAD',cache:'no-store'});const len=r.headers.get('content-length')||'';if(last&&len!==last)location.reload();last=len}catch{}},900)})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -449,6 +449,7 @@
   .submit:active{transform:translateY(0)}
   .submit:disabled{background:#E0E0E5;color:#999;box-shadow:none;cursor:not-allowed;transform:none}
   .submit__hint{font-size:13px;color:var(--ink-soft)}
+  .privacy{font-size:12px;color:var(--ink-soft);margin:14px 0 0;max-width:60ch;line-height:1.5;opacity:.75}
   .submit__hint.err{color:var(--hot);font-weight:600}
   .submit__hint.ok{color:#1B5E20;font-weight:600}
   .submit__hint.ok::before{content:"✓";display:inline-block;margin-right:5px}
@@ -996,7 +997,7 @@
         <span class="step__num">Step 4</span>
         <h2 class="step__title">Send your wishlist</h2>
       </div>
-      <p class="step__hint">You'll receive a confirmation email right away. I'll then check my inventory and get back to you with an expected delivery timeline and a payment link. Sending this form is just a wishlist — it doesn't commit you to anything. Your order is only confirmed once you pay.</p>
+      <p class="step__hint">Once you send your picks, I'll check my inventory and get back to you with an expected delivery timeline and a payment link. Sending this form is just a wishlist — it doesn't commit you to anything. Your order is only confirmed once you pay.</p>
       <div class="field__row">
         <label class="field">
           <span class="field__label">Your name</span>
@@ -1011,6 +1012,7 @@
         <span class="field__label">Anything else? (optional)</span>
         <textarea class="field__textarea" name="notes" id="f_notes" placeholder="Vibes, occasion, must-haves, things to avoid…"></textarea>
       </label>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
     </section>
 
     <section class="summary" aria-live="polite">
@@ -1026,6 +1028,7 @@
       <button type="submit" class="submit" id="submit">Send my picks</button>
       <span class="submit__hint" id="hint">Pick at least one colour and one shape to continue.</span>
     </div>
+    <p class="privacy">Your name and email go to me via Formspree (a form-relay service), only to follow up about your kit. I don't sell or share them.</p>
   </form>
 
   <section class="thanks" id="thanks" aria-live="polite">
@@ -1041,9 +1044,20 @@
 (() => {
   // Replace REPLACE_ME with your Formspree form ID before sharing
   const ENDPOINT = "https://formspree.io/f/REPLACE_ME";
+  const ENDPOINT_OK = !ENDPOINT.includes('REPLACE_ME');
+  const IS_LOCAL = ['localhost','127.0.0.1',''].includes(location.hostname);
 
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+  if(!ENDPOINT_OK){
+    if(IS_LOCAL){
+      console.warn('[idle] ENDPOINT not configured — submissions will log locally only.');
+    } else {
+      // Block submissions on prod when endpoint is missing
+      console.error('[idle] ENDPOINT not configured — submissions disabled.');
+    }
+  }
 
   const SIZES = {
     regular: {
@@ -1370,6 +1384,7 @@
       const b = shapeIndex[id];
       return `${b.dataset.name} — ${pref}`;
     }).join(', ');
+    const gotcha = $('#picker [name="_gotcha"]').value;
     const body = {
       name, email, _subject: `idle kit picks — ${name}`,
       size: (SIZES[state.size] && SIZES[state.size].label) || state.size,
@@ -1377,10 +1392,17 @@
       colours: colourStr,
       shapes: shapeStr,
       notes: notes || '(none)',
+      _gotcha: gotcha,
     };
-    if(ENDPOINT.includes('REPLACE_ME')){
-      console.log('[idle] picks:', body);
-      showThanks(); return;
+    if(!ENDPOINT_OK){
+      if(IS_LOCAL){
+        console.log('[idle] picks (dev — not sent):', body);
+        showThanks(); return;
+      }
+      $('#hint').textContent = "Sorry — the form isn't connected yet. Please email me directly.";
+      $('#hint').classList.remove('ok');
+      $('#hint').classList.add('err');
+      return;
     }
     $('#submit').disabled = true; $('#submit').textContent = 'Sending…';
     try {
