@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>idle — kit picker</title>
-<script>(()=>{const h=location.hostname;if(h!=='localhost'&&h!=='127.0.0.1'&&h!=='')return;let last='';setInterval(async()=>{try{const r=await fetch('/mobilet-picker.html',{method:'HEAD',cache:'no-store'});const len=r.headers.get('content-length')||'';if(last&&len!==last)location.reload();last=len}catch{}},900)})();</script>
+<script>(()=>{const h=location.hostname;if(h!=='localhost'&&h!=='127.0.0.1'&&h!=='')return;let last='';setInterval(async()=>{try{const r=await fetch(location.pathname,{method:'HEAD',cache:'no-store'});const len=r.headers.get('content-length')||'';if(last&&len!==last)location.reload();last=len}catch{}},900)})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
