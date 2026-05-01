@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>idle — kit picker</title>
+<title>idle — kit wishlist</title>
 <script>(()=>{const h=location.hostname;if(h!=='localhost'&&h!=='127.0.0.1'&&h!=='')return;let last='';setInterval(async()=>{try{const r=await fetch(location.pathname,{method:'HEAD',cache:'no-store'});const len=r.headers.get('content-length')||'';if(last&&len!==last)location.reload();last=len}catch{}},900)})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,8 @@
   .header-bar{background:var(--navy);margin:0 -24px;padding:36px 24px 32px;margin-bottom:32px}
   .brand{display:flex;align-items:center;gap:16px;margin-bottom:12px}
   .brand__logo{height:32px;width:auto}
-  .brand__tag{font:500 13px/1.4 'Josefin Sans';color:var(--mint);letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+  .brand__tag{font:italic 600 24px/1 'Josefin Sans',sans-serif;color:var(--mint);letter-spacing:-0.01em}
+  .header-bar.is-thanks .lede{display:none}
   .lede{font:400 16px/1.6 'Josefin Sans';color:var(--mint);max-width:54ch;margin:0;opacity:.85}
   .lede--meta{font-size:13px;opacity:.6;margin-top:10px}
   .step{margin-top:48px;padding-top:36px;border-top:1px solid var(--line)}
@@ -269,25 +270,25 @@
     background:repeating-linear-gradient(45deg,#fff,#fff 3px,#d8d8e0 3px,#d8d8e0 5px);
     opacity:0.85;
   }
-  .swatch[data-border="1"] .swatch__disc{border:1.5px solid color-mix(in srgb, var(--swatch-color) 60%, #888)}
+  .swatch[data-border="1"] .swatch__disc{border:1.5px solid var(--swatch-edge, color-mix(in srgb, var(--swatch-color) 60%, #888))}
   .swatch__name{font-size:12px;font-weight:500;color:var(--ink);text-align:center;transition:all .15s ease}
-  .swatch__badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;font:600 9px/18px 'Josefin Sans';text-align:center;display:none;z-index:5}
+  .swatch__badge{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;font:600 10px 'Josefin Sans';display:none;align-items:center;justify-content:center;z-index:5}
   .swatch{position:relative}
 
   /* Like — navy */
   .swatch[data-state="like"] .swatch__disc{box-shadow:0 0 0 3px var(--bg),0 0 0 5.5px var(--navy)}
   .swatch[data-state="like"] .swatch__name{color:var(--navy);font-weight:600}
-  .swatch[data-state="like"] .swatch__badge{display:block;background:var(--navy);color:#fff}
+  .swatch[data-state="like"] .swatch__badge{display:flex;background:var(--navy);color:#fff}
 
   /* Love — hot pink */
   .swatch[data-state="love"] .swatch__disc{box-shadow:0 0 0 3px var(--bg),0 0 0 5.5px var(--hot);transform:scale(1.06)}
   .swatch[data-state="love"] .swatch__name{color:var(--hot);font-weight:600}
-  .swatch[data-state="love"] .swatch__badge{display:block;background:var(--hot);color:#fff}
+  .swatch[data-state="love"] .swatch__badge{display:flex;background:var(--hot);color:#fff}
 
   /* Dislike */
   .swatch[data-state="dislike"] .swatch__disc{opacity:0.35;box-shadow:none}
   .swatch[data-state="dislike"] .swatch__name{color:#999;font-weight:400;text-decoration:line-through}
-  .swatch[data-state="dislike"] .swatch__badge{display:block;background:#9E9E9E;color:#fff}
+  .swatch[data-state="dislike"] .swatch__badge{display:flex;background:#9E9E9E;color:#fff}
 
   /* ── SIZE PICKER ── */
   .size-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
@@ -493,9 +494,9 @@
   <header class="header-bar">
     <div class="brand">
       <img src="logo.svg" alt="idle" class="brand__logo">
-      <div class="brand__tag">kit picker</div>
+      <div class="brand__tag">kit wishlist</div>
     </div>
-    <p class="lede">Tell me which colours and shapes spark joy. Your picks will be used as direction for shaping your kit — this isn't a final order, just your taste in front of me.</p>
+    <p class="lede">Tell me which colours and shapes spark joy. Your picks will be used as direction for shaping your kit — this isn't a final order, just your preferences communicated!</p>
     <p class="lede lede--meta">As a small art studio, I work with limited inventory. If a specific shape or colour is out of stock, I'll always reach out and ask whether you'd prefer to wait for it or have it replaced with something else.</p>
   </header>
 
@@ -550,32 +551,32 @@
       <p class="step__hint">Colours may look slightly different on screen than in real life. No need to mark every colour — unmarked ones are 'indifferent', and I may add those to your kit if I think they work!</p>
       <div id="swatches">
         <div class="colour-group">
-          <div class="colour-group__label">See-through</div>
+          <div class="colour-group__label">Classic — transparent</div>
           <div class="swatches">
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#EE1122;--swatch-opacity:0.90" data-state="none" data-id="c05" data-name="Neon Red" data-hex="#EE1122"><span class="swatch__disc" style="background:#EE1122"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Neon Red</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FF1744;--swatch-opacity:0.90" data-state="none" data-id="c06" data-name="Neon Pink" data-hex="#FF1744"><span class="swatch__disc" style="background:#FF1744"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Neon Pink</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#E88E00;--swatch-opacity:0.50" data-state="none" data-id="c03" data-name="Amber" data-hex="#E88E00"><span class="swatch__disc" style="background:#E88E00"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Amber</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#E6FF00;--swatch-opacity:0.18;--swatch-edge:#8BEB00" data-state="none" data-id="c09" data-name="Neon Yellow" data-hex="#E6FF00"><span class="swatch__disc" style="background:#E6FF00"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Neon Yellow</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFF9C4;--swatch-opacity:0.16" data-state="none" data-id="c10" data-name="Light Yellow" data-hex="#FFF9C4" data-border="1"><span class="swatch__disc" style="background:#FFF9C4"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Light Yellow</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#00B858;--swatch-opacity:0.50" data-state="none" data-id="c08" data-name="Bright Green" data-hex="#00B858"><span class="swatch__disc" style="background:#00B858"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Bright Green</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#1B5E20;--swatch-opacity:0.90" data-state="none" data-id="c04" data-name="Deep Green" data-hex="#1B5E20"><span class="swatch__disc" style="background:#1B5E20"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Green</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#5BB8E8;--swatch-opacity:0.10" data-state="none" data-id="c01" data-name="Light Blue" data-hex="#5BB8E8"><span class="swatch__disc" style="background:#5BB8E8"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Light Blue</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#1A237E;--swatch-opacity:0.90" data-state="none" data-id="c02" data-name="Deep Blue" data-hex="#1A237E"><span class="swatch__disc" style="background:#1A237E"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Blue</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#3A0A7A;--swatch-opacity:0.55" data-state="none" data-id="c07" data-name="Deep Purple" data-hex="#3A0A7A"><span class="swatch__disc" style="background:#3A0A7A"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Purple</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFFFFF;--swatch-opacity:0.05" data-state="none" data-id="c11" data-name="Transparent" data-hex="#FFFFFF" data-transparent="1"><span class="swatch__disc" style="background:#FFFFFF"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Transparent</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#EE1122;--swatch-opacity:0.90" data-state="none" data-id="c05" data-name="Neon Red" data-hex="#EE1122"><span class="swatch__disc" style="background:#EE1122"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Neon Red</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FF1744;--swatch-opacity:0.90" data-state="none" data-id="c06" data-name="Neon Pink" data-hex="#FF1744"><span class="swatch__disc" style="background:#FF1744"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Neon Pink</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#E88E00;--swatch-opacity:0.50" data-state="none" data-id="c03" data-name="Amber" data-hex="#E88E00"><span class="swatch__disc" style="background:#E88E00"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Amber</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#E6FF00;--swatch-opacity:0.18;--swatch-edge:#8BEB00" data-state="none" data-id="c09" data-name="Neon Yellow" data-hex="#E6FF00"><span class="swatch__disc" style="background:#E6FF00"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Neon Yellow</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFF9C4;--swatch-opacity:0.16;--swatch-edge:#E0D070" data-state="none" data-id="c10" data-name="Light Yellow" data-hex="#FFF9C4" data-border="1"><span class="swatch__disc" style="background:#FFF9C4"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Light Yellow</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#00C853;--swatch-opacity:0.80" data-state="none" data-id="c08" data-name="Bright Green" data-hex="#00C853"><span class="swatch__disc" style="background:#00C853"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Bright Green</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#1B5E20;--swatch-opacity:0.90" data-state="none" data-id="c04" data-name="Deep Green" data-hex="#1B5E20"><span class="swatch__disc" style="background:#1B5E20"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Deep Green</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#5BB8E8;--swatch-opacity:0.10" data-state="none" data-id="c01" data-name="Light Blue" data-hex="#5BB8E8"><span class="swatch__disc" style="background:#5BB8E8"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Light Blue</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#1A237E;--swatch-opacity:0.90" data-state="none" data-id="c02" data-name="Deep Blue" data-hex="#1A237E"><span class="swatch__disc" style="background:#1A237E"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Deep Blue</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#3A0A7A;--swatch-opacity:0.55" data-state="none" data-id="c07" data-name="Deep Purple" data-hex="#3A0A7A"><span class="swatch__disc" style="background:#3A0A7A"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Deep Purple</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFFFFF;--swatch-opacity:0.05" data-state="none" data-id="c11" data-name="Transparent" data-hex="#FFFFFF" data-transparent="1"><span class="swatch__disc" style="background:#FFFFFF"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Transparent</span></button>
           </div>
         </div>
         <div class="colour-group">
           <div class="colour-group__label">Special — solid colour</div>
           <div class="swatches">
-<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#A01050" data-state="none" data-id="c13" data-name="Deep Pink" data-hex="#A01050"><span class="swatch__disc" style="background:#A01050"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Pink</span></button>
-<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#FFCCBC" data-state="none" data-id="c12" data-name="Peachy" data-hex="#FFCCBC" data-border="1"><span class="swatch__disc" style="background:#FFCCBC"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Peachy</span></button>
+<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#A01050" data-state="none" data-id="c13" data-name="Deep Pink" data-hex="#A01050"><span class="swatch__disc" style="background:#A01050"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Deep Pink</span></button>
+<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#FFCCBC" data-state="none" data-id="c12" data-name="Peachy" data-hex="#FFCCBC" data-border="1"><span class="swatch__disc" style="background:#FFCCBC"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Peachy</span></button>
           </div>
         </div>
         <div class="colour-group">
           <div class="colour-group__label">Special — matte</div>
           <div class="swatches">
-<button type="button" class="swatch" data-finish="matte" style="--swatch-color:#7986CB" data-state="none" data-id="c14" data-name="Periwinkle" data-hex="#7986CB"><span class="swatch__disc" style="background:#7986CB"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Periwinkle</span></button>
+<button type="button" class="swatch" data-finish="matte" style="--swatch-color:#7986CB" data-state="none" data-id="c14" data-name="Periwinkle" data-hex="#7986CB"><span class="swatch__disc" style="background:#7986CB"><span class="swatch__refl"></span><span class="swatch__badge"></span></span><span class="swatch__name">Periwinkle</span></button>
           </div>
         </div>
       </div>
@@ -997,7 +998,7 @@
         <span class="step__num">Step 4</span>
         <h2 class="step__title">Send your wishlist</h2>
       </div>
-      <p class="step__hint">Once you send your picks, I'll check my inventory and get back to you with an expected delivery timeline and a payment link. Sending this form is just a wishlist — it doesn't commit you to anything. Your order is only confirmed once you pay.</p>
+      <p class="step__hint">Once you send your wishlist, I'll check my inventory and get back to you with an expected delivery timeline and a payment link. Sending this form doesn't commit you to anything, your order is only confirmed once you pay.</p>
       <div class="field__row">
         <label class="field">
           <span class="field__label">Your name</span>
@@ -1033,11 +1034,11 @@
 
   <section class="thanks" id="thanks" aria-live="polite">
     <span class="heart">&#9825;</span>
-    <h2>Thanks — I've got your picks!</h2>
-    <p>Your picks will be used as direction for your kit — I'll be in touch soon.</p>
+    <h2>Thanks, I've got your wishlist!</h2>
+    <p>Your wishlist will be used as direction for your kit — I'll be in touch soon.</p>
   </section>
 
-  <p class="footer">made with care · idle</p>
+  <p class="footer">for idle moments</p>
 </main>
 
 <script>
@@ -1420,6 +1421,7 @@
     clearState();
     $('#picker').style.display='none';
     $('#thanks').classList.add('is-on');
+    $('.header-bar').classList.add('is-thanks');
     window.scrollTo({top:0,behavior:'smooth'});
   }
 })();
