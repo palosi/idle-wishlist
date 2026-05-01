@@ -1045,8 +1045,50 @@
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
+  const SIZES = {
+    regular: {
+      label: 'Regular',
+      desc: "Regular sized mobiles are the recommended starting point. You'll get a handmade frame with three connection points for acrylic elements, and about 30 acrylic pieces to design the composition of your dreams.",
+      price: '50 €'
+    },
+    large: {
+      label: 'Large',
+      desc: "Large mobiles make a real statement. You'll get a handmade frame with four connection points for acrylic elements, and about 45 acrylic pieces for a richer, more layered composition. Recommended for makers with some more experience or confidence with crafting.",
+      price: '65 €'
+    },
+    bigboi: {
+      label: 'Big Boi',
+      desc: "Large is still not large enough? I can always make your wildest dreams come true, but do describe your vision in the message below, and I'll see what I can do.",
+      price: "Let's talk"
+    }
+  };
+  const FRAMES = { silver: 'Silver', brass: 'Brass' };
+  const sizeDesc = id => `${SIZES[id].desc}<span class='size-price'>${SIZES[id].price}</span>`;
+
+  const STORAGE_KEY = 'idle:picks:v1';
   const state = { size: 'regular', colours: {}, frame: 'silver', shapes: {} };
-  const sizeNames = {regular:'Regular', large:'Large', bigboi:'Big Boi'};
+
+  function loadState(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      const saved = JSON.parse(raw);
+      if(saved && typeof saved === 'object'){
+        if(SIZES[saved.size]) state.size = saved.size;
+        if(FRAMES[saved.frame]) state.frame = saved.frame;
+        if(saved.colours && typeof saved.colours === 'object') state.colours = saved.colours;
+        if(saved.shapes && typeof saved.shapes === 'object') state.shapes = saved.shapes;
+      }
+    } catch {}
+  }
+  function saveState(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+  }
+  function clearState(){
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+  }
+  loadState();
+
   const PREF_STATES = ['none','like','love','dislike'];
   const PREF_BADGES = { none:'', like:'✓', love:'♥', dislike:'✕' };
   const PREF_A11Y = {
@@ -1064,32 +1106,43 @@
     btn.setAttribute('aria-pressed', pref === 'like' || pref === 'love' ? 'true' : 'false');
     btn.setAttribute('aria-label', `${btn.dataset.name} — ${PREF_A11Y[pref]}`);
   }
-  // initialise a11y attributes
-  [...$$('.swatch'), ...$$('.charm')].forEach(b => applyPrefA11y(b, b.dataset.state || 'none'));
+  function applyPref(btn, pref){
+    btn.dataset.state = pref;
+    const badge = btn.querySelector('.swatch__badge');
+    if(badge) badge.textContent = PREF_BADGES[pref];
+    applyPrefA11y(btn, pref);
+  }
+
+  // hydrate swatches / charms from saved state (and prune unknown ids)
+  Object.entries(state.colours).forEach(([id, pref]) => {
+    if(colourIndex[id] && PREF_STATES.includes(pref)) applyPref(colourIndex[id], pref);
+    else delete state.colours[id];
+  });
+  Object.entries(state.shapes).forEach(([id, pref]) => {
+    if(shapeIndex[id] && PREF_STATES.includes(pref)) applyPref(shapeIndex[id], pref);
+    else delete state.shapes[id];
+  });
+  // ensure remaining buttons have a11y attributes
+  [...$$('.swatch'), ...$$('.charm')].forEach(b => {
+    if(!b.dataset.state || b.dataset.state === 'none') applyPrefA11y(b, 'none');
+  });
 
   function cyclePref(stateObj, btn){
     const cur = btn.dataset.state || 'none';
     const next = PREF_STATES[(PREF_STATES.indexOf(cur) + 1) % PREF_STATES.length];
-    btn.dataset.state = next;
-    const badge = btn.querySelector('.swatch__badge');
-    if(badge) badge.textContent = PREF_BADGES[next];
-    applyPrefA11y(btn, next);
+    applyPref(btn, next);
     if(next === 'none'){
       delete stateObj[btn.dataset.id];
     } else {
       stateObj[btn.dataset.id] = next;
     }
+    saveState();
     update();
   }
 
   $$('.swatch').forEach(b => b.addEventListener('click', () => cyclePref(state.colours, b)));
   $$('.charm').forEach(b => b.addEventListener('click', () => cyclePref(state.shapes, b)));
 
-  const sizeDescs = {
-    regular: "Regular sized mobiles are the recommended starting point. You'll get a handmade frame with three connection points for acrylic elements, and about 30 acrylic pieces to design the composition of your dreams.<span class='size-price'>50\u2009\u20AC</span>",
-    large: "Large mobiles make a real statement. You'll get a handmade frame with four connection points for acrylic elements, and about 45 acrylic pieces for a richer, more layered composition. Recommended for makers with some more experience or confidence with crafting.<span class='size-price'>65\u2009\u20AC</span>",
-    bigboi: "Large is still not large enough? I can always make your wildest dreams come true, but do describe your vision in the message below, and I'll see what I can do.<span class='size-price'>Let's talk</span>"
-  };
   // ── radio group: roving tabindex + arrow-key navigation ──
   function bindRadioGroup(selector, onSelect){
     const opts = $$(selector);
@@ -1119,14 +1172,27 @@
     });
   }
 
-  $('#size-desc').innerHTML = sizeDescs[state.size];
+  // sync radio-group DOM with hydrated state
+  function syncRadioGroup(selector, current){
+    $$(selector).forEach(o => {
+      const on = (o.dataset.size || o.dataset.frame) === current;
+      o.setAttribute('aria-checked', on ? 'true' : 'false');
+      o.tabIndex = on ? 0 : -1;
+    });
+  }
+  syncRadioGroup('.size__opt', state.size);
+  syncRadioGroup('.frame__opt', state.frame);
+  $('#size-desc').innerHTML = sizeDesc(state.size);
+
   bindRadioGroup('.size__opt', b => {
     state.size = b.dataset.size;
-    $('#size-desc').innerHTML = sizeDescs[state.size];
+    $('#size-desc').innerHTML = sizeDesc(state.size);
+    saveState();
     update();
   });
   bindRadioGroup('.frame__opt', b => {
     state.frame = b.dataset.frame;
+    saveState();
     update();
   });
 
@@ -1260,8 +1326,8 @@
     if(shapeEntries.length){ ss2.classList.remove('empty'); ss2.innerHTML = shapeEntries.map(([id,pref]) => chipShape(id,pref)).join(''); }
     else { ss2.classList.add('empty'); ss2.textContent = '— none yet —'; }
 
-    $('#sum_size').textContent = sizeNames[state.size] || state.size;
-    $('#sum_frame').textContent = state.frame === 'silver' ? 'Silver' : 'Brass';
+    $('#sum_size').textContent = (SIZES[state.size] && SIZES[state.size].label) || state.size;
+    $('#sum_frame').textContent = FRAMES[state.frame] || state.frame;
 
     const sn = $('#sum_notes');
     if(notes){ sn.classList.remove('empty'); sn.textContent = notes; }
@@ -1306,8 +1372,8 @@
     }).join(', ');
     const body = {
       name, email, _subject: `idle kit picks — ${name}`,
-      size: sizeNames[state.size] || state.size,
-      frame: state.frame === 'silver' ? 'Silver' : 'Brass',
+      size: (SIZES[state.size] && SIZES[state.size].label) || state.size,
+      frame: FRAMES[state.frame] || state.frame,
       colours: colourStr,
       shapes: shapeStr,
       notes: notes || '(none)',
@@ -1330,6 +1396,7 @@
   });
 
   function showThanks(){
+    clearState();
     $('#picker').style.display='none';
     $('#thanks').classList.add('is-on');
     window.scrollTo({top:0,behavior:'smooth'});
