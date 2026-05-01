@@ -59,6 +59,11 @@
   .step__legend__item--dislike .step__legend__dot{background:#BBBAC2}
   .step__legend__item--dislike{color:#BBBAC2}
 
+  .size-price{
+    display:block;margin-top:10px;
+    font:700 20px/1 'Josefin Sans';color:var(--navy);letter-spacing:-0.01em;
+  }
+
   /* ── COLOUR SWATCHES ── */
   .colour-group{margin-bottom:20px}
   .colour-group:last-child{margin-bottom:0}
@@ -265,7 +270,8 @@
   }
   .swatch[data-border="1"] .swatch__disc{border:2.5px solid var(--swatch-color)}
   .swatch__name{font-size:12px;font-weight:500;color:var(--ink);text-align:center;transition:all .15s ease}
-  .swatch__badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;font:600 9px/18px 'Josefin Sans';text-align:center;display:none;z-index:2}
+  .swatch__badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;font:600 9px/18px 'Josefin Sans';text-align:center;display:none;z-index:5}
+  .swatch{position:relative}
 
   /* Like — navy */
   .swatch[data-state="like"] .swatch__disc{box-shadow:0 0 0 3px var(--bg),0 0 0 5.5px var(--navy)}
@@ -463,6 +469,7 @@
       <div class="brand__tag">kit picker</div>
     </div>
     <p class="lede">Tell me which colours and shapes spark joy. Your picks will be used as direction for shaping your kit — this isn't a final order, just your taste in front of me.</p>
+    <p class="lede" style="opacity:.6;font-size:13px;margin-top:10px">As a small art studio, I work with limited inventory. If a specific shape or colour is out of stock, I'll always reach out and ask whether you'd prefer to wait for it or have it replaced with something else.</p>
   </header>
 
   <form id="picker" novalidate>
@@ -472,22 +479,22 @@
         <span class="step__num">Step 1</span>
         <h2 class="step__title">Pick your base</h2>
       </div>
-      <p class="step__hint">Choose a size and frame finish.</p>
-
+      <div class="frame-label">Size</div>
       <div class="size-picker" role="radiogroup" aria-label="Mobile size">
-        <button type="button" class="size__opt" data-size="small" aria-pressed="false">
-          <img src="mobile-small.svg" alt="Small mobile">
-          <span class="size__name">Small</span>
-        </button>
-        <button type="button" class="size__opt" data-size="medium" aria-pressed="true">
-          <img src="mobile-medium.svg" alt="Medium mobile">
-          <span class="size__name">Medium</span>
+        <button type="button" class="size__opt" data-size="regular" aria-pressed="true">
+          <img src="mobile-small.svg" alt="Regular mobile">
+          <span class="size__name">Regular</span>
         </button>
         <button type="button" class="size__opt" data-size="large" aria-pressed="false">
-          <img src="mobile-large.svg" alt="Large mobile">
+          <img src="mobile-medium.svg" alt="Large mobile">
           <span class="size__name">Large</span>
         </button>
+        <button type="button" class="size__opt" data-size="bigboi" aria-pressed="false">
+          <img src="mobile-large.svg" alt="Big Boi mobile">
+          <span class="size__name">Big Boi</span>
+        </button>
       </div>
+      <p class="step__hint" id="size-desc" style="margin-bottom:28px">Regular sized mobiles are the recommended starting point. You'll get a handmade frame with three connection points for acrylic elements, and about 30 acrylic pieces to design the composition of your dreams.<span class="size-price">50&#8201;&#8364;</span></p>
 
       <div class="frame-label">Frame finish</div>
       <div class="frame" role="radiogroup" aria-label="Frame finish">
@@ -517,30 +524,30 @@
         <div class="colour-group">
           <div class="colour-group__label">See-through</div>
           <div class="swatches">
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#EE1122;--swatch-opacity:0.90" data-state="none" data-id="c05" data-name="Neon Red" data-hex="#EE1122"><span class="swatch__disc" style="background:#EE1122"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Neon Red</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FF1744;--swatch-opacity:0.90" data-state="none" data-id="c06" data-name="Neon Pink" data-hex="#FF1744"><span class="swatch__disc" style="background:#FF1744"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Neon Pink</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFA000;--swatch-opacity:0.50" data-state="none" data-id="c03" data-name="Amber" data-hex="#FFA000"><span class="swatch__disc" style="background:#FFA000"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Amber</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#C6FF00;--swatch-opacity:0.18;--swatch-edge:#8BEB00" data-state="none" data-id="c09" data-name="Neon Yellow" data-hex="#C6FF00"><span class="swatch__disc" style="background:#C6FF00"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Neon Yellow</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFF9C4;--swatch-opacity:0.16" data-state="none" data-id="c10" data-name="Light Yellow" data-hex="#FFF9C4" data-border="1"><span class="swatch__disc" style="background:#FFF9C4"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Light Yellow</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#00B858;--swatch-opacity:0.38" data-state="none" data-id="c08" data-name="Bright Green" data-hex="#00B858"><span class="swatch__disc" style="background:#00B858"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Bright Green</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#1B5E20;--swatch-opacity:0.90" data-state="none" data-id="c04" data-name="Deep Green" data-hex="#1B5E20"><span class="swatch__disc" style="background:#1B5E20"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Deep Green</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#3DA5E0;--swatch-opacity:0.10" data-state="none" data-id="c01" data-name="Bright Blue" data-hex="#3DA5E0"><span class="swatch__disc" style="background:#3DA5E0"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Bright Blue</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#1A237E;--swatch-opacity:0.90" data-state="none" data-id="c02" data-name="Deep Blue" data-hex="#1A237E"><span class="swatch__disc" style="background:#1A237E"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Deep Blue</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#4A148C;--swatch-opacity:0.55" data-state="none" data-id="c07" data-name="Deep Purple" data-hex="#4A148C"><span class="swatch__disc" style="background:#4A148C"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Deep Purple</span></button>
-<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFFFFF;--swatch-opacity:0.05" data-state="none" data-id="c11" data-name="Transparent" data-hex="#FFFFFF" data-transparent="1"><span class="swatch__disc" style="background:#FFFFFF"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Transparent</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#EE1122;--swatch-opacity:0.90" data-state="none" data-id="c05" data-name="Neon Red" data-hex="#EE1122"><span class="swatch__disc" style="background:#EE1122"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Neon Red</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FF1744;--swatch-opacity:0.90" data-state="none" data-id="c06" data-name="Neon Pink" data-hex="#FF1744"><span class="swatch__disc" style="background:#FF1744"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Neon Pink</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#E88E00;--swatch-opacity:0.50" data-state="none" data-id="c03" data-name="Amber" data-hex="#E88E00"><span class="swatch__disc" style="background:#E88E00"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Amber</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#E6FF00;--swatch-opacity:0.18;--swatch-edge:#8BEB00" data-state="none" data-id="c09" data-name="Neon Yellow" data-hex="#E6FF00"><span class="swatch__disc" style="background:#E6FF00"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Neon Yellow</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFF9C4;--swatch-opacity:0.16" data-state="none" data-id="c10" data-name="Light Yellow" data-hex="#FFF9C4" data-border="1"><span class="swatch__disc" style="background:#FFF9C4"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Light Yellow</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#00B858;--swatch-opacity:0.50" data-state="none" data-id="c08" data-name="Bright Green" data-hex="#00B858"><span class="swatch__disc" style="background:#00B858"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Bright Green</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#1B5E20;--swatch-opacity:0.90" data-state="none" data-id="c04" data-name="Deep Green" data-hex="#1B5E20"><span class="swatch__disc" style="background:#1B5E20"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Green</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#5BB8E8;--swatch-opacity:0.10" data-state="none" data-id="c01" data-name="Light Blue" data-hex="#5BB8E8"><span class="swatch__disc" style="background:#5BB8E8"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Light Blue</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#1A237E;--swatch-opacity:0.90" data-state="none" data-id="c02" data-name="Deep Blue" data-hex="#1A237E"><span class="swatch__disc" style="background:#1A237E"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Blue</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#3A0A7A;--swatch-opacity:0.55" data-state="none" data-id="c07" data-name="Deep Purple" data-hex="#3A0A7A"><span class="swatch__disc" style="background:#3A0A7A"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Purple</span></button>
+<button type="button" class="swatch" data-finish="seethrough" style="--swatch-color:#FFFFFF;--swatch-opacity:0.05" data-state="none" data-id="c11" data-name="Transparent" data-hex="#FFFFFF" data-transparent="1"><span class="swatch__disc" style="background:#FFFFFF"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Transparent</span></button>
           </div>
         </div>
         <div class="colour-group">
           <div class="colour-group__label">Special — solid colour</div>
           <div class="swatches">
-<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#880E4F" data-state="none" data-id="c13" data-name="Deep Pink" data-hex="#880E4F"><span class="swatch__disc" style="background:#880E4F"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Deep Pink</span></button>
-<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#FFCCBC" data-state="none" data-id="c12" data-name="Peachy" data-hex="#FFCCBC"><span class="swatch__disc" style="background:#FFCCBC"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Peachy</span></button>
+<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#A01050" data-state="none" data-id="c13" data-name="Deep Pink" data-hex="#A01050"><span class="swatch__disc" style="background:#A01050"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Deep Pink</span></button>
+<button type="button" class="swatch" data-finish="solid" style="--swatch-color:#FFCCBC" data-state="none" data-id="c12" data-name="Peachy" data-hex="#FFCCBC"><span class="swatch__disc" style="background:#FFCCBC"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Peachy</span></button>
           </div>
         </div>
         <div class="colour-group">
           <div class="colour-group__label">Special — matte</div>
           <div class="swatches">
-<button type="button" class="swatch" data-finish="matte" style="--swatch-color:#7986CB" data-state="none" data-id="c14" data-name="Periwinkle" data-hex="#7986CB"><span class="swatch__disc" style="background:#7986CB"><span class="swatch__badge"></span><span class="swatch__refl"></span></span><span class="swatch__name">Periwinkle</span></button>
+<button type="button" class="swatch" data-finish="matte" style="--swatch-color:#7986CB" data-state="none" data-id="c14" data-name="Periwinkle" data-hex="#7986CB"><span class="swatch__disc" style="background:#7986CB"><span class="swatch__refl"></span></span><span class="swatch__badge"></span><span class="swatch__name">Periwinkle</span></button>
           </div>
         </div>
       </div>
@@ -961,13 +968,9 @@
     <section class="step">
       <div class="step__header">
         <span class="step__num">Step 4</span>
-        <h2 class="step__title">A few details</h2>
+        <h2 class="step__title">Send your wishlist</h2>
       </div>
-      <p class="step__hint">So I can get back to you.</p>
-      <label class="field">
-        <span class="field__label">Anything else? (optional)</span>
-        <textarea class="field__textarea" name="notes" id="f_notes" placeholder="Vibes, occasion, must-haves, things to avoid…"></textarea>
-      </label>
+      <p class="step__hint">You'll receive a confirmation email right away. I'll then check my inventory and get back to you with an expected delivery timeline and a payment link. Sending this form is just a wishlist — it doesn't commit you to anything. Your order is only confirmed once you pay.</p>
       <div class="field__row">
         <label class="field">
           <span class="field__label">Your name</span>
@@ -978,11 +981,15 @@
           <input class="field__input" type="email" name="email" id="f_email" autocomplete="email" required>
         </label>
       </div>
+      <label class="field">
+        <span class="field__label">Anything else? (optional)</span>
+        <textarea class="field__textarea" name="notes" id="f_notes" placeholder="Vibes, occasion, must-haves, things to avoid…"></textarea>
+      </label>
     </section>
 
     <section class="summary" aria-live="polite">
       <h3>Your picks</h3>
-      <div class="summary__row"><div class="summary__key">Size</div><div class="summary__val" id="sum_size">Medium</div></div>
+      <div class="summary__row"><div class="summary__key">Size</div><div class="summary__val" id="sum_size">Regular</div></div>
       <div class="summary__row"><div class="summary__key">Frame</div><div class="summary__val" id="sum_frame">Silver</div></div>
       <div class="summary__row"><div class="summary__key">Colours</div><div class="summary__val empty" id="sum_colours">— none yet —</div></div>
       <div class="summary__row"><div class="summary__key">Shapes</div><div class="summary__val empty" id="sum_shapes">— none yet —</div></div>
@@ -1012,7 +1019,8 @@
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-  const state = { size: 'medium', colours: {}, frame: 'silver', shapes: {} };
+  const state = { size: 'regular', colours: {}, frame: 'silver', shapes: {} };
+  const sizeNames = {regular:'Regular', large:'Large', bigboi:'Big Boi'};
   const PREF_STATES = ['none','like','love','dislike'];
   const PREF_BADGES = { none:'', like:'✓', love:'♥', dislike:'✕' };
 
@@ -1037,9 +1045,15 @@
   $$('.swatch').forEach(b => b.addEventListener('click', () => cyclePref(state.colours, b)));
   $$('.charm').forEach(b => b.addEventListener('click', () => cyclePref(state.shapes, b)));
 
+  const sizeDescs = {
+    regular: "Regular sized mobiles are the recommended starting point. You'll get a handmade frame with three connection points for acrylic elements, and about 30 acrylic pieces to design the composition of your dreams.<span class='size-price'>50\u2009\u20AC</span>",
+    large: "Large mobiles make a real statement. You'll get a handmade frame with four connection points for acrylic elements, and about 45 acrylic pieces for a richer, more layered composition. Recommended for makers with some more experience or confidence with crafting.<span class='size-price'>65\u2009\u20AC</span>",
+    bigboi: "Large is still not large enough? I can always make your wildest dreams come true, but do describe your vision in the message below, and I'll see what I can do.<span class='size-price'>Let's talk</span>"
+  };
   $$('.size__opt').forEach(b => b.addEventListener('click', () => {
     $$('.size__opt').forEach(o => o.setAttribute('aria-pressed', o===b ? 'true' : 'false'));
     state.size = b.dataset.size;
+    $('#size-desc').innerHTML = sizeDescs[state.size];
     update();
   }));
 
@@ -1177,7 +1191,7 @@
     if(shapeEntries.length){ ss2.classList.remove('empty'); ss2.innerHTML = shapeEntries.map(([id,pref]) => chipShape(id,pref)).join(''); }
     else { ss2.classList.add('empty'); ss2.textContent = '— none yet —'; }
 
-    $('#sum_size').textContent = state.size.charAt(0).toUpperCase() + state.size.slice(1);
+    $('#sum_size').textContent = sizeNames[state.size] || state.size;
     $('#sum_frame').textContent = state.frame === 'silver' ? 'Silver' : 'Brass';
 
     const sn = $('#sum_notes');
@@ -1221,7 +1235,7 @@
     }).join(', ');
     const body = {
       name, email, _subject: `idle kit picks — ${name}`,
-      size: state.size.charAt(0).toUpperCase() + state.size.slice(1),
+      size: sizeNames[state.size] || state.size,
       frame: state.frame === 'silver' ? 'Silver' : 'Brass',
       colours: colourStr,
       shapes: shapeStr,
