@@ -289,12 +289,12 @@
     transition:all .25s ease;font-family:'Josefin Sans',sans-serif;
   }
   .size__opt:hover{border-color:#ccc}
-  .size__opt[aria-pressed="true"]{border-color:var(--navy);background:var(--navy)}
+  .size__opt[aria-checked="true"]{border-color:var(--navy);background:var(--navy)}
   .size__opt img{height:90px;width:auto;opacity:0.7;transition:opacity .2s}
-  .size__opt[aria-pressed="true"] img{opacity:1;filter:brightness(0) invert(1)}
+  .size__opt[aria-checked="true"] img{opacity:1;filter:brightness(0) invert(1)}
   .size__opt:hover img{opacity:1}
   .size__name{font:500 12px/1 'Josefin Sans';color:#888;letter-spacing:.04em;transition:all .2s}
-  .size__opt[aria-pressed="true"] .size__name{color:var(--mint);font-weight:600}
+  .size__opt[aria-checked="true"] .size__name{color:var(--mint);font-weight:600}
 
   /* ── FRAME PICKER ── */
   .frame-label{font:600 11px/1 'Josefin Sans';letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
@@ -306,17 +306,17 @@
     transition:all .25s ease;font-family:'Josefin Sans',sans-serif;
   }
   .frame__opt:hover{border-color:#ccc}
-  .frame__opt[aria-pressed="true"]{border-color:var(--navy);background:var(--navy)}
+  .frame__opt[aria-checked="true"]{border-color:var(--navy);background:var(--navy)}
   .frame__arc{
     width:44px;height:24px;border-radius:44px 44px 0 0;
     border:2.5px solid transparent;border-bottom:none;transition:border-color .25s;
   }
   .frame__opt[data-frame="silver"] .frame__arc{border-color:#B8B8B8}
   .frame__opt[data-frame="brass"] .frame__arc{border-color:#C4A240}
-  .frame__opt[aria-pressed="true"][data-frame="silver"] .frame__arc{border-color:#D8D8D8}
-  .frame__opt[aria-pressed="true"][data-frame="brass"] .frame__arc{border-color:#E8CC60}
+  .frame__opt[aria-checked="true"][data-frame="silver"] .frame__arc{border-color:#D8D8D8}
+  .frame__opt[aria-checked="true"][data-frame="brass"] .frame__arc{border-color:#E8CC60}
   .frame__name{font:500 13px/1 'Josefin Sans';color:#888;letter-spacing:.06em;transition:all .2s}
-  .frame__opt[aria-pressed="true"] .frame__name{color:var(--mint);font-weight:600}
+  .frame__opt[aria-checked="true"] .frame__name{color:var(--mint);font-weight:600}
 
   /* ── SHAPE SCATTER ── */
   .charms{
@@ -439,6 +439,19 @@
   .thanks .heart{font-size:52px;display:block;margin-bottom:16px;animation:wob 1.6s ease-in-out infinite}
   @keyframes wob{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg) scale(1.05)}}
   .footer{text-align:center;color:var(--navy);font-size:12px;margin-top:64px;opacity:.4}
+
+  /* ── FOCUS RINGS ── */
+  .swatch:focus-visible,
+  .charm:focus-visible,
+  .size__opt:focus-visible,
+  .frame__opt:focus-visible,
+  .submit:focus-visible{
+    outline:2px solid var(--hot);
+    outline-offset:3px;
+    border-radius:14px;
+  }
+  .charm:focus-visible{outline-offset:1px}
+  .submit:focus-visible{outline-offset:4px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -472,16 +485,16 @@
       </div>
       <div class="frame-label">Size</div>
       <div class="size-picker" role="radiogroup" aria-label="Mobile size">
-        <button type="button" class="size__opt" data-size="regular" aria-pressed="true">
-          <img src="mobile-small.svg" alt="Regular mobile">
+        <button type="button" class="size__opt" data-size="regular" role="radio" aria-checked="true" tabindex="0">
+          <img src="mobile-small.svg" alt="" aria-hidden="true">
           <span class="size__name">Regular</span>
         </button>
-        <button type="button" class="size__opt" data-size="large" aria-pressed="false">
-          <img src="mobile-medium.svg" alt="Large mobile">
+        <button type="button" class="size__opt" data-size="large" role="radio" aria-checked="false" tabindex="-1">
+          <img src="mobile-medium.svg" alt="" aria-hidden="true">
           <span class="size__name">Large</span>
         </button>
-        <button type="button" class="size__opt" data-size="bigboi" aria-pressed="false">
-          <img src="mobile-large.svg" alt="Big Boi mobile">
+        <button type="button" class="size__opt" data-size="bigboi" role="radio" aria-checked="false" tabindex="-1">
+          <img src="mobile-large.svg" alt="" aria-hidden="true">
           <span class="size__name">Big Boi</span>
         </button>
       </div>
@@ -489,12 +502,12 @@
 
       <div class="frame-label">Frame finish</div>
       <div class="frame" role="radiogroup" aria-label="Frame finish">
-        <button type="button" class="frame__opt" data-frame="silver" aria-pressed="true">
-          <span class="frame__arc"></span>
+        <button type="button" class="frame__opt" data-frame="silver" role="radio" aria-checked="true" tabindex="0">
+          <span class="frame__arc" aria-hidden="true"></span>
           <span class="frame__name">Silver</span>
         </button>
-        <button type="button" class="frame__opt" data-frame="brass" aria-pressed="false">
-          <span class="frame__arc"></span>
+        <button type="button" class="frame__opt" data-frame="brass" role="radio" aria-checked="false" tabindex="-1">
+          <span class="frame__arc" aria-hidden="true"></span>
           <span class="frame__name">Brass</span>
         </button>
       </div>
@@ -1012,10 +1025,23 @@
   const sizeNames = {regular:'Regular', large:'Large', bigboi:'Big Boi'};
   const PREF_STATES = ['none','like','love','dislike'];
   const PREF_BADGES = { none:'', like:'✓', love:'♥', dislike:'✕' };
+  const PREF_A11Y = {
+    none: 'not marked. Click to like.',
+    like: 'liked. Click to love.',
+    love: 'loved. Click to mark disliked.',
+    dislike: 'disliked. Click to clear.'
+  };
 
   // index colour and shape elements
   const colourIndex = Object.fromEntries($$('.swatch').map(b => [b.dataset.id, b]));
   const shapeIndex  = Object.fromEntries($$('.charm').map(b => [b.dataset.id, b]));
+
+  function applyPrefA11y(btn, pref){
+    btn.setAttribute('aria-pressed', pref === 'like' || pref === 'love' ? 'true' : 'false');
+    btn.setAttribute('aria-label', `${btn.dataset.name} — ${PREF_A11Y[pref]}`);
+  }
+  // initialise a11y attributes
+  [...$$('.swatch'), ...$$('.charm')].forEach(b => applyPrefA11y(b, b.dataset.state || 'none'));
 
   function cyclePref(stateObj, btn){
     const cur = btn.dataset.state || 'none';
@@ -1023,6 +1049,7 @@
     btn.dataset.state = next;
     const badge = btn.querySelector('.swatch__badge');
     if(badge) badge.textContent = PREF_BADGES[next];
+    applyPrefA11y(btn, next);
     if(next === 'none'){
       delete stateObj[btn.dataset.id];
     } else {
@@ -1039,19 +1066,45 @@
     large: "Large mobiles make a real statement. You'll get a handmade frame with four connection points for acrylic elements, and about 45 acrylic pieces for a richer, more layered composition. Recommended for makers with some more experience or confidence with crafting.<span class='size-price'>65\u2009\u20AC</span>",
     bigboi: "Large is still not large enough? I can always make your wildest dreams come true, but do describe your vision in the message below, and I'll see what I can do.<span class='size-price'>Let's talk</span>"
   };
+  // ── radio group: roving tabindex + arrow-key navigation ──
+  function bindRadioGroup(selector, onSelect){
+    const opts = $$(selector);
+    function select(target, focus){
+      opts.forEach(o => {
+        const on = o === target;
+        o.setAttribute('aria-checked', on ? 'true' : 'false');
+        o.tabIndex = on ? 0 : -1;
+      });
+      if(focus) target.focus();
+      onSelect(target);
+    }
+    opts.forEach((b, i) => {
+      b.addEventListener('click', () => select(b, false));
+      b.addEventListener('keydown', e => {
+        const k = e.key;
+        if(k === 'ArrowRight' || k === 'ArrowDown'){
+          e.preventDefault(); select(opts[(i + 1) % opts.length], true);
+        } else if(k === 'ArrowLeft' || k === 'ArrowUp'){
+          e.preventDefault(); select(opts[(i - 1 + opts.length) % opts.length], true);
+        } else if(k === 'Home'){
+          e.preventDefault(); select(opts[0], true);
+        } else if(k === 'End'){
+          e.preventDefault(); select(opts[opts.length - 1], true);
+        }
+      });
+    });
+  }
+
   $('#size-desc').innerHTML = sizeDescs[state.size];
-  $$('.size__opt').forEach(b => b.addEventListener('click', () => {
-    $$('.size__opt').forEach(o => o.setAttribute('aria-pressed', o===b ? 'true' : 'false'));
+  bindRadioGroup('.size__opt', b => {
     state.size = b.dataset.size;
     $('#size-desc').innerHTML = sizeDescs[state.size];
     update();
-  }));
-
-  $$('.frame__opt').forEach(b => b.addEventListener('click', () => {
-    $$('.frame__opt').forEach(o => o.setAttribute('aria-pressed', o===b ? 'true' : 'false'));
+  });
+  bindRadioGroup('.frame__opt', b => {
     state.frame = b.dataset.frame;
     update();
-  }));
+  });
 
   $('#f_notes').addEventListener('input', update);
 
