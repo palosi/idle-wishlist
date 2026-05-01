@@ -59,6 +59,7 @@
   .step__legend__item--love{color:var(--hot)}
   .step__legend__item--dislike .step__legend__dot{background:#BBBAC2}
   .step__legend__item--dislike{color:#BBBAC2}
+  .step__legend__item--clear{color:var(--ink-soft);font-weight:500;opacity:.75}
 
   .size-price{
     display:block;margin-top:10px;
@@ -71,7 +72,9 @@
   .colour-group__label{font:600 11px/1 'Josefin Sans';letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;padding-left:2px}
   .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
   .swatch{appearance:none;border:none;background:transparent;padding:8px 4px 10px;border-radius:var(--radius);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;transition:transform .15s ease,background .15s ease;font:inherit;color:inherit;position:relative}
-  .swatch:hover .swatch__disc{transform:scale(1.06)}
+  @media (hover: hover){
+    .swatch:hover .swatch__disc{transform:scale(1.06)}
+  }
   .swatch__disc{
     width:46px;height:46px;border-radius:50%;
     transition:transform .15s ease,box-shadow .2s ease,opacity .2s ease;
@@ -140,16 +143,18 @@
     animation:sweepUp .5s cubic-bezier(.25,.1,.25,1) forwards;
   }
   /* Hover — edges glow brighter, disc lifts */
-  .swatch[data-finish="seethrough"]:hover .swatch__disc{
-    border:3.5px solid var(--swatch-color);
-    transform:translateY(-2px);
-    box-shadow:
-      2px 3px 0px -0.5px var(--swatch-color),
-      inset 0 0 12px -1px var(--swatch-color),
-      0 0 6px -1px var(--swatch-color);
-  }
-  .swatch[data-finish="seethrough"]:hover .swatch__disc::before{
-    opacity:calc(var(--swatch-opacity, 0.15) + 0.08);
+  @media (hover: hover){
+    .swatch[data-finish="seethrough"]:hover .swatch__disc{
+      border:3.5px solid var(--swatch-color);
+      transform:translateY(-2px);
+      box-shadow:
+        2px 3px 0px -0.5px var(--swatch-color),
+        inset 0 0 12px -1px var(--swatch-color),
+        0 0 6px -1px var(--swatch-color);
+    }
+    .swatch[data-finish="seethrough"]:hover .swatch__disc::before{
+      opacity:calc(var(--swatch-opacity, 0.15) + 0.08);
+    }
   }
   /* Active — pressed flat, edge flares */
   .swatch[data-finish="seethrough"]:active .swatch__disc{
@@ -181,9 +186,11 @@
       );
     opacity:0.5;
   }
-  .swatch[data-finish="solid"]:hover .swatch__disc{
-    transform:translateY(-2px);
-    box-shadow:3px 4px 1px -1px rgba(0,0,0,.15);
+  @media (hover: hover){
+    .swatch[data-finish="solid"]:hover .swatch__disc{
+      transform:translateY(-2px);
+      box-shadow:3px 4px 1px -1px rgba(0,0,0,.15);
+    }
   }
   .swatch.sweep-down[data-finish="solid"] .swatch__disc::after{
     animation:sweepDown .5s cubic-bezier(.2,.1,.3,1) forwards;
@@ -229,9 +236,11 @@
     opacity:0.4;
     filter:url(#grain);
   }
-  .swatch[data-finish="matte"]:hover .swatch__disc{
-    transform:translateY(-2px);
-    box-shadow:3px 4px 1px -1px rgba(0,0,0,.12);
+  @media (hover: hover){
+    .swatch[data-finish="matte"]:hover .swatch__disc{
+      transform:translateY(-2px);
+      box-shadow:3px 4px 1px -1px rgba(0,0,0,.12);
+    }
   }
   .swatch.sweep-down[data-finish="matte"] .swatch__disc::after{
     animation:sweepDown .5s cubic-bezier(.2,.1,.3,1) forwards;
@@ -288,11 +297,11 @@
     display:flex;flex-direction:column;align-items:center;gap:10px;
     transition:all .25s ease;font-family:'Josefin Sans',sans-serif;
   }
-  .size__opt:hover{border-color:#ccc}
+  @media (hover: hover){ .size__opt:hover{border-color:#ccc} }
   .size__opt[aria-checked="true"]{border-color:var(--navy);background:var(--navy)}
   .size__opt img{height:90px;width:auto;opacity:0.7;transition:opacity .2s}
   .size__opt[aria-checked="true"] img{opacity:1;filter:brightness(0) invert(1)}
-  .size__opt:hover img{opacity:1}
+  @media (hover: hover){ .size__opt:hover img{opacity:1} }
   .size__name{font:500 12px/1 'Josefin Sans';color:#888;letter-spacing:.04em;transition:all .2s}
   .size__opt[aria-checked="true"] .size__name{color:var(--mint);font-weight:600}
 
@@ -305,7 +314,7 @@
     display:flex;flex-direction:column;align-items:center;gap:12px;
     transition:all .25s ease;font-family:'Josefin Sans',sans-serif;
   }
-  .frame__opt:hover{border-color:#ccc}
+  @media (hover: hover){ .frame__opt:hover{border-color:#ccc} }
   .frame__opt[aria-checked="true"]{border-color:var(--navy);background:var(--navy)}
   .frame__arc{
     width:44px;height:24px;border-radius:44px 44px 0 0;
@@ -359,9 +368,14 @@
     fill:rgb(213,212,221);stroke:none;
     transition:opacity .2s;
   }
-  .charm:hover{
-    transform:rotate(calc(var(--tilt) * 0.4)) scale(1.06);
-    z-index:2;
+  @media (hover: hover){
+    .charm:hover{
+      transform:rotate(calc(var(--tilt) * 0.4)) scale(1.06);
+      z-index:2;
+    }
+    .charm[data-state="love"]:hover{
+      transform:rotate(calc(var(--tilt) * 0.3)) scale(1.08);
+    }
   }
 
   /* Like — navy outline */
@@ -425,11 +439,15 @@
   /* ── SUBMIT ── */
   .submit-row{margin-top:28px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .submit{appearance:none;border:none;background:var(--hot);color:#fff;font:600 16px/1 'Josefin Sans';padding:16px 28px;border-radius:999px;cursor:pointer;letter-spacing:.01em;transition:transform .12s ease,box-shadow .15s ease;box-shadow:0 6px 18px -4px rgba(255,23,68,.45)}
-  .submit:hover{transform:translateY(-1px);box-shadow:0 10px 24px -4px rgba(255,23,68,.55)}
+  @media (hover: hover){
+    .submit:hover{transform:translateY(-1px);box-shadow:0 10px 24px -4px rgba(255,23,68,.55)}
+  }
   .submit:active{transform:translateY(0)}
   .submit:disabled{background:#E0E0E5;color:#999;box-shadow:none;cursor:not-allowed;transform:none}
   .submit__hint{font-size:13px;color:var(--ink-soft)}
   .submit__hint.err{color:var(--hot);font-weight:600}
+  .submit__hint.ok{color:#1B5E20;font-weight:600}
+  .submit__hint.ok::before{content:"✓";display:inline-block;margin-right:5px}
 
   /* ── THANKS ── */
   .thanks{display:none;text-align:center;padding:64px 24px}
@@ -522,6 +540,7 @@
         <span class="step__legend__item step__legend__item--like"><span class="step__legend__dot"></span>Click once to like</span>
         <span class="step__legend__item step__legend__item--love"><span class="step__legend__dot"></span>Twice to love</span>
         <span class="step__legend__item step__legend__item--dislike"><span class="step__legend__dot"></span>Three times to dislike</span>
+        <span class="step__legend__item step__legend__item--clear">A fourth click clears it</span>
       </div>
       <p class="step__hint">Colours may look slightly different on screen than in real life. No need to mark every colour — unmarked ones are 'indifferent', and I may add those to your kit if I think they work!</p>
       <div id="swatches">
@@ -566,6 +585,7 @@
         <span class="step__legend__item step__legend__item--like"><span class="step__legend__dot"></span>Click once to like</span>
         <span class="step__legend__item step__legend__item--love"><span class="step__legend__dot"></span>Twice to love</span>
         <span class="step__legend__item step__legend__item--dislike"><span class="step__legend__dot"></span>Three times to dislike</span>
+        <span class="step__legend__item step__legend__item--clear">A fourth click clears it</span>
       </div>
       <p class="step__hint">No need to mark every shape — unmarked ones are 'indifferent', and I may add those to your kit if I think they work!</p>
       <div class="charms" id="charms"><button type="button" class="charm" data-state="none" data-id="a01" data-name="Shape 1" style="--tilt:5deg;--w:65.72px;--h:37.14px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 183.48 103.68" width="65.72" height="37.14" aria-hidden="true"><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="outline-path" d="M20.24,89.37C51.1,92.25,31.38,53.56,57.65,54.86c25.84,1.27,6,47.81,31.59,48.8s4.89-52.61,38-49.08c28.85,3.08,4.39,35.31,33.47,34.92,12.72-.16,22.94-20,22.73-40.4-.19-17.47-10.95-48-40.81-47.62C129.9,1.63,114.89,13.24,93.61,10,78.36,7.72,54.65.13,42.54,0,17.59-.26,2.66,23.78.56,43.13-1.69,63.87,2.43,87.7,20.24,89.37Z"/>
@@ -1192,19 +1212,21 @@
     _packTimer = setTimeout(packCharms, 150);
   });
 
-  // reflection sweep: down on enter, up on leave (all finish types)
-  $$('.swatch[data-finish]').forEach(sw => {
-    sw.addEventListener('mouseenter', () => {
-      sw.classList.remove('sweep-up');
-      void sw.offsetWidth;
-      sw.classList.add('sweep-down');
+  // reflection sweep: down on enter, up on leave — pointer-only, skip on touch
+  if(window.matchMedia('(hover: hover)').matches){
+    $$('.swatch[data-finish]').forEach(sw => {
+      sw.addEventListener('mouseenter', () => {
+        sw.classList.remove('sweep-up');
+        void sw.offsetWidth;
+        sw.classList.add('sweep-down');
+      });
+      sw.addEventListener('mouseleave', () => {
+        sw.classList.remove('sweep-down');
+        void sw.offsetWidth;
+        sw.classList.add('sweep-up');
+      });
     });
-    sw.addEventListener('mouseleave', () => {
-      sw.classList.remove('sweep-down');
-      void sw.offsetWidth;
-      sw.classList.add('sweep-up');
-    });
-  });
+  }
 
   const STATE_LABELS = { like:'like', love:'love', dislike:'dislike' };
   function chipColour(id, pref){
@@ -1246,6 +1268,7 @@
     const hasShape = shapeEntries.length >= 1;
     const ok = hasColour && hasShape;
     hint.classList.remove('err');
+    hint.classList.toggle('ok', ok);
     hint.textContent = !hasColour && !hasShape ? 'Pick at least one colour and one shape to continue.'
       : !hasColour ? 'Pick at least one colour.'
       : !hasShape ? 'Pick at least one shape.'
@@ -1264,6 +1287,7 @@
     const notes = $('#f_notes').value.trim();
     if(!name || !email){
       $('#hint').textContent = 'Add your name and email so I can reach you.';
+      $('#hint').classList.remove('ok');
       $('#hint').classList.add('err');
       (!$('#f_name').value ? $('#f_name') : $('#f_email')).focus();
       return;
@@ -1296,6 +1320,7 @@
     } catch {
       $('#submit').disabled = false; $('#submit').textContent = 'Send my picks';
       $('#hint').textContent = "Hmm, that didn't go through — try again or email me directly.";
+      $('#hint').classList.remove('ok');
       $('#hint').classList.add('err');
     }
   });
