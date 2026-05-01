@@ -283,7 +283,25 @@
   .swatch[data-state="dislike"] .swatch__badge{display:block;background:#9E9E9E;color:#fff}
 
   /* ── CORD TOGGLE ── */
-  .frame{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;max-width:320px}
+  /* ── SIZE PICKER ── */
+  .size-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+  .size__opt{
+    appearance:none;border:1.5px solid var(--line);background:var(--bg);
+    padding:16px 8px 14px;border-radius:var(--radius);cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    transition:all .25s ease;font-family:'Josefin Sans',sans-serif;
+  }
+  .size__opt:hover{border-color:#ccc}
+  .size__opt[aria-pressed="true"]{border-color:var(--navy);background:var(--navy)}
+  .size__opt img{height:90px;width:auto;opacity:0.7;transition:opacity .2s}
+  .size__opt[aria-pressed="true"] img{opacity:1;filter:brightness(0) invert(1)}
+  .size__opt:hover img{opacity:1}
+  .size__name{font:500 12px/1 'Josefin Sans';color:#888;letter-spacing:.04em;transition:all .2s}
+  .size__opt[aria-pressed="true"] .size__name{color:var(--mint);font-weight:600}
+
+  /* ── FRAME PICKER ── */
+  .frame-label{font:600 11px/1 'Josefin Sans';letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+  .frame{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:320px}
   .frame__opt{
     appearance:none;border:1.5px solid var(--line);background:var(--bg);
     padding:24px 16px 18px;border-radius:var(--radius);cursor:pointer;
@@ -452,9 +470,26 @@
     <section class="step">
       <div class="step__header">
         <span class="step__num">Step 1</span>
-        <h2 class="step__title">Pick your frame</h2>
+        <h2 class="step__title">Pick your base</h2>
       </div>
-      <p class="step__hint">Which finish do you prefer?</p>
+      <p class="step__hint">Choose a size and frame finish.</p>
+
+      <div class="size-picker" role="radiogroup" aria-label="Mobile size">
+        <button type="button" class="size__opt" data-size="small" aria-pressed="false">
+          <img src="mobile-small.svg" alt="Small mobile">
+          <span class="size__name">Small</span>
+        </button>
+        <button type="button" class="size__opt" data-size="medium" aria-pressed="true">
+          <img src="mobile-medium.svg" alt="Medium mobile">
+          <span class="size__name">Medium</span>
+        </button>
+        <button type="button" class="size__opt" data-size="large" aria-pressed="false">
+          <img src="mobile-large.svg" alt="Large mobile">
+          <span class="size__name">Large</span>
+        </button>
+      </div>
+
+      <div class="frame-label">Frame finish</div>
       <div class="frame" role="radiogroup" aria-label="Frame finish">
         <button type="button" class="frame__opt" data-frame="silver" aria-pressed="true">
           <span class="frame__arc"></span>
@@ -947,8 +982,9 @@
 
     <section class="summary" aria-live="polite">
       <h3>Your picks</h3>
-      <div class="summary__row"><div class="summary__key">Colours</div><div class="summary__val empty" id="sum_colours">— none yet —</div></div>
+      <div class="summary__row"><div class="summary__key">Size</div><div class="summary__val" id="sum_size">Medium</div></div>
       <div class="summary__row"><div class="summary__key">Frame</div><div class="summary__val" id="sum_frame">Silver</div></div>
+      <div class="summary__row"><div class="summary__key">Colours</div><div class="summary__val empty" id="sum_colours">— none yet —</div></div>
       <div class="summary__row"><div class="summary__key">Shapes</div><div class="summary__val empty" id="sum_shapes">— none yet —</div></div>
       <div class="summary__row"><div class="summary__key">Notes</div><div class="summary__val empty" id="sum_notes">—</div></div>
     </section>
@@ -976,7 +1012,7 @@
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-  const state = { colours: {}, frame: 'silver', shapes: {} };
+  const state = { size: 'medium', colours: {}, frame: 'silver', shapes: {} };
   const PREF_STATES = ['none','like','love','dislike'];
   const PREF_BADGES = { none:'', like:'✓', love:'♥', dislike:'✕' };
 
@@ -1000,6 +1036,12 @@
 
   $$('.swatch').forEach(b => b.addEventListener('click', () => cyclePref(state.colours, b)));
   $$('.charm').forEach(b => b.addEventListener('click', () => cyclePref(state.shapes, b)));
+
+  $$('.size__opt').forEach(b => b.addEventListener('click', () => {
+    $$('.size__opt').forEach(o => o.setAttribute('aria-pressed', o===b ? 'true' : 'false'));
+    state.size = b.dataset.size;
+    update();
+  }));
 
   $$('.frame__opt').forEach(b => b.addEventListener('click', () => {
     $$('.frame__opt').forEach(o => o.setAttribute('aria-pressed', o===b ? 'true' : 'false'));
@@ -1135,6 +1177,7 @@
     if(shapeEntries.length){ ss2.classList.remove('empty'); ss2.innerHTML = shapeEntries.map(([id,pref]) => chipShape(id,pref)).join(''); }
     else { ss2.classList.add('empty'); ss2.textContent = '— none yet —'; }
 
+    $('#sum_size').textContent = state.size.charAt(0).toUpperCase() + state.size.slice(1);
     $('#sum_frame').textContent = state.frame === 'silver' ? 'Silver' : 'Brass';
 
     const sn = $('#sum_notes');
@@ -1178,6 +1221,7 @@
     }).join(', ');
     const body = {
       name, email, _subject: `idle kit picks — ${name}`,
+      size: state.size.charAt(0).toUpperCase() + state.size.slice(1),
       frame: state.frame === 'silver' ? 'Silver' : 'Brass',
       colours: colourStr,
       shapes: shapeStr,
