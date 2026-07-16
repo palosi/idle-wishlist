@@ -1,0 +1,13 @@
+{
+  "name": "idle-wishlist",
+  "compatibility_date": "2026-07-16",
+  "assets": {
+    "directory": "./docs"
+  },
+  "routes": [
+    {
+      "pattern": "wishlist.studioidle.com",
+      "custom_domain": true
+    }
+  ]
+}
